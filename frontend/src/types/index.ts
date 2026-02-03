@@ -2,6 +2,7 @@ export interface BetOpportunity {
   match_name: string;
   sport: string;
   market: string;
+  selection: string;
   target_book: string;
   target_odds_american: number;
   target_odds_decimal: number;

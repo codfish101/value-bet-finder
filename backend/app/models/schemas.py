@@ -43,5 +43,18 @@ class ParlayRecommendation(BaseModel):
     expected_value_combined: float
     note: str
 
+class SavedBet(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    match_name: str
+    selection: str
+    odds: float
+    stake: float
+    potential_payout: float
+    ev_percent: float
+    book: str
+    sport: str
+    timestamp: str
+    status: str = "Pending" # Pending, Won, Lost
+
 class OddsRequest(BaseModel):
     provider: str = "mock" # "mock" or "the-odds-api"

@@ -45,12 +45,17 @@ export default function Home() {
               Live Positive EV Opportunities • 0.25x Kelly
             </p>
           </div>
-          <button
-            onClick={fetchOpportunities}
-            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm font-semibold transition"
-          >
-            Refresh Odds
-          </button>
+          <div className="flex gap-4">
+            <a href="/history" className="px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded text-sm font-semibold transition">
+              📂 Portfolio
+            </a>
+            <button
+              onClick={fetchOpportunities}
+              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm font-semibold transition"
+            >
+              Refresh Odds
+            </button>
+          </div>
         </header>
 
         {error && (

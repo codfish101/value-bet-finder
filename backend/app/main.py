@@ -1,8 +1,10 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.math_logic import to_decimal, remove_vig_multiplicative, calculate_ev, kelly_criterion
-from app.models.schemas import BetOpportunity
+from app.models.schemas import BetOpportunity, SavedBet
 from app.services.odds_api import get_live_odds
+from app.core.db import create_db_and_tables, get_session
+from sqlmodel import Session, select
 import json
 import os
 from datetime import datetime
@@ -10,7 +12,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app = FastAPI(title="Value Bet Finder API", version="1.0.0")
+app = FastAPI(title="Value Bet Finder API", version="2.0.0")
+
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
 
 app.add_middleware(
     CORSMiddleware,
@@ -222,6 +228,27 @@ def start_case_insensitive_match(s1, s2):
 
 def get_selection_name(op: BetOpportunity) -> str:
     return op.selection
+
+# --- V2: Database Endpoints ---
+
+@app.post("/bets", response_model=SavedBet)
+def save_bet(bet: SavedBet, session: Session = Depends(get_session)):
+    """
+    Save a selected bet to the database (Portfolio).
+    """
+    session.add(bet)
+    session.commit()
+    session.refresh(bet)
+    return bet
+
+@app.get("/history", response_model=list[SavedBet])
+def get_bet_history(session: Session = Depends(get_session)):
+    """
+    Retrieve all saved bets.
+    """
+    statement = select(SavedBet).order_by(SavedBet.id.desc())
+    results = session.exec(statement)
+    return results.all()
 
 
 
