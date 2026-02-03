@@ -1,0 +1,341 @@
+[
+    {
+        "id": "nba_bos_phx",
+        "sport_key": "basketball_nba",
+        "commence_time": "2024-03-15T23:00:00Z",
+        "home_team": "Boston Celtics",
+        "away_team": "Phoenix Suns",
+        "bookmakers": [
+            {
+                "key": "pinnacle",
+                "title": "Pinnacle",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "Boston Celtics",
+                                "price": -175
+                            },
+                            {
+                                "name": "Phoenix Suns",
+                                "price": 159
+                            }
+                        ]
+                    },
+                    {
+                        "key": "player_points_over_under",
+                        "outcomes": [
+                            {
+                                "name": "Over",
+                                "description": "Jayson Tatum",
+                                "point": 28.5,
+                                "price": -130
+                            },
+                            {
+                                "name": "Under",
+                                "description": "Jayson Tatum",
+                                "point": 28.5,
+                                "price": 110
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "key": "draftkings",
+                "title": "DraftKings",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "Boston Celtics",
+                                "price": -170
+                            },
+                            {
+                                "name": "Phoenix Suns",
+                                "price": 145
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "key": "fanduel",
+                "title": "FanDuel",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "Boston Celtics",
+                                "price": -165
+                            },
+                            {
+                                "name": "Phoenix Suns",
+                                "price": 170
+                            }
+                        ]
+                    },
+                    {
+                        "key": "player_points_over_under",
+                        "outcomes": [
+                            {
+                                "name": "Over",
+                                "description": "Jayson Tatum",
+                                "point": 28.5,
+                                "price": -110
+                            },
+                            {
+                                "name": "Under",
+                                "description": "Jayson Tatum",
+                                "point": 28.5,
+                                "price": -110
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "nba_lal_gsw",
+        "sport_key": "basketball_nba",
+        "commence_time": "2024-03-16T00:30:00Z",
+        "home_team": "Los Angeles Lakers",
+        "away_team": "Golden State Warriors",
+        "bookmakers": [
+            {
+                "key": "pinnacle",
+                "title": "Pinnacle",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "Los Angeles Lakers",
+                                "price": -130
+                            },
+                            {
+                                "name": "Golden State Warriors",
+                                "price": 119
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "key": "fanduel",
+                "title": "FanDuel",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "Los Angeles Lakers",
+                                "price": -115
+                            },
+                            {
+                                "name": "Golden State Warriors",
+                                "price": 105
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "nfl_kc_buf",
+        "sport_key": "americanfootball_nfl",
+        "commence_time": "2024-09-08T20:20:00Z",
+        "home_team": "Kansas City Chiefs",
+        "away_team": "Buffalo Bills",
+        "bookmakers": [
+            {
+                "key": "pinnacle",
+                "title": "Pinnacle",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "Kansas City Chiefs",
+                                "price": 205
+                            },
+                            {
+                                "name": "Buffalo Bills",
+                                "price": -230
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "key": "fanduel",
+                "title": "FanDuel",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "Kansas City Chiefs",
+                                "price": 220
+                            },
+                            {
+                                "name": "Buffalo Bills",
+                                "price": -250
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "tennis_alc_sin",
+        "sport_key": "tennis_atp",
+        "commence_time": "2024-07-14T14:00:00Z",
+        "home_team": "Carlos Alcaraz",
+        "away_team": "Jannik Sinner",
+        "bookmakers": [
+            {
+                "key": "pinnacle",
+                "title": "Pinnacle",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "Carlos Alcaraz",
+                                "price": 105
+                            },
+                            {
+                                "name": "Jannik Sinner",
+                                "price": -116
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "key": "fanduel",
+                "title": "FanDuel",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "Carlos Alcaraz",
+                                "price": 125
+                            },
+                            {
+                                "name": "Jannik Sinner",
+                                "price": -135
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "mlb_nyy_bos",
+        "sport_key": "baseball_mlb",
+        "commence_time": "2024-06-15T19:05:00Z",
+        "home_team": "New York Yankees",
+        "away_team": "Boston Red Sox",
+        "bookmakers": [
+            {
+                "key": "pinnacle",
+                "title": "Pinnacle",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "New York Yankees",
+                                "price": -155
+                            },
+                            {
+                                "name": "Boston Red Sox",
+                                "price": 142
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "key": "fanduel",
+                "title": "FanDuel",
+                "markets": [
+                    {
+                        "key": "h2h",
+                        "outcomes": [
+                            {
+                                "name": "New York Yankees",
+                                "price": -140
+                            },
+                            {
+                                "name": "Boston Red Sox",
+                                "price": 130
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "nba_den_mil",
+        "sport_key": "basketball_nba",
+        "commence_time": "2024-03-18T21:00:00Z",
+        "home_team": "Denver Nuggets",
+        "away_team": "Milwaukee Bucks",
+        "bookmakers": [
+            {
+                "key": "pinnacle",
+                "title": "Pinnacle",
+                "markets": [
+                    {
+                        "key": "spreads",
+                        "outcomes": [
+                            {
+                                "name": "Denver Nuggets",
+                                "point": -4.5,
+                                "price": -110
+                            },
+                            {
+                                "name": "Milwaukee Bucks",
+                                "point": 4.5,
+                                "price": -102
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "key": "fanduel",
+                "title": "FanDuel",
+                "markets": [
+                    {
+                        "key": "spreads",
+                        "outcomes": [
+                            {
+                                "name": "Denver Nuggets",
+                                "point": -4.5,
+                                "price": 102
+                            },
+                            {
+                                "name": "Milwaukee Bucks",
+                                "point": 4.5,
+                                "price": -120
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
