@@ -16,7 +16,13 @@ app = FastAPI(title="Value Bet Finder API", version="2.0.0")
 
 @app.on_event("startup")
 def on_startup():
-    create_db_and_tables()
+    try:
+        create_db_and_tables()
+        print("Database connected and tables created.")
+    except Exception as e:
+        print(f"CRITICAL DATABASE ERROR: {e}")
+        # We don't raise here so the app can start and we can see the logs
+        pass
 
 app.add_middleware(
     CORSMiddleware,
