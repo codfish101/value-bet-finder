@@ -190,16 +190,11 @@ async def _fetch_ev_data(sport: str, min_ev: float) -> list[BetOpportunity]:
         if data:
             use_live = True
         else:
-            print("⚠️  Live fetch failed or empty. Falling back to sample.")
+            print(f"⚠️  Live fetch failed or empty for {sport}.")
     
     if not use_live:
-        print("ℹ️  Using SAMPLE data (no API key or live data unavailable).")
-        if not os.path.exists(DATA_FILE):
-                # Don't raise inside helper if possible, or handle carefully
-                print("❌ Sample data not found.")
-                return []
-        with open(DATA_FILE, "r") as f:
-            data = json.load(f)
+        print("ℹ️  No live data available. Returning empty list (Sample field disabled).")
+        return []
 
     opportunities = process_odds_data(data)
     
