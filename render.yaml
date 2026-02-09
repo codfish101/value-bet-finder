@@ -1,0 +1,31 @@
+services:
+  # PostgreSQL Database
+  - type: pserv
+    name: vbf-database
+    env: docker
+    plan: free
+    region: oregon
+    databaseName: value_bet_finder
+    databaseUser: vbf_user
+    ipAllowList: []
+
+  # Backend API
+  - type: web
+    name: value-bet-finder-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: vbf-database
+          property: connectionString
+      - key: ODDS_API_KEY
+        sync: false  # User must set this manually
+      - key: FRONTEND_URL
+        sync: false  # User must set this to their Vercel URL
+    rootDir: backend

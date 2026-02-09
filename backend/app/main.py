@@ -1,33 +1,43 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.math_logic import to_decimal, remove_vig_multiplicative, calculate_ev, kelly_criterion
 from app.models.schemas import BetOpportunity, SavedBet
-from app.services.odds_api import get_live_odds
+from app.services.odds_api import get_live_odds, get_available_sports
 from app.core.db import create_db_and_tables, get_session
+from app.core.config import settings
 from sqlmodel import Session, select
 import json
 import os
 from datetime import datetime
-from dotenv import load_dotenv
+from typing import Optional
 
-load_dotenv()
-
-app = FastAPI(title="Value Bet Finder API", version="2.0.0")
+app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)
 
 @app.on_event("startup")
 def on_startup():
+    print(f"\n{'='*60}")
+    print(f"🚀 Starting {settings.APP_NAME} v{settings.APP_VERSION}")
+    print(f"{'='*60}\n")
+    
+    # Validate configuration
+    issues = settings.validate()
+    for issue in issues:
+        print(issue)
+    
+    # Initialize database
     try:
         create_db_and_tables()
-        print("Database connected and tables created.")
+        print("✓ Database connected and tables created.")
     except Exception as e:
-        print(f"CRITICAL DATABASE ERROR: {e}")
+        print(f"❌ CRITICAL DATABASE ERROR: {e}")
         # We don't raise here so the app can start and we can see the logs
         pass
+    
+    print(f"\n{'='*60}\n")
 
 app.add_middleware(
     CORSMiddleware,
-    # In production, restrict this to your frontend domain (e.g. vercel.app)
-    allow_origins=["*"], 
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -130,39 +140,72 @@ def process_odds_data(data: list) -> list[BetOpportunity]:
 
 @app.get("/")
 def read_root():
-    return {"status": "active", "system": "Value Bet Finder v1"}
+    return {
+        "status": "active", 
+        "system": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "message": "Welcome to the Value Bet Finder API. Visit /docs for API documentation."
+    }
+
+@app.get("/health")
+def health_check():
+    """Health check endpoint for monitoring"""
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "database": "connected" if settings.DATABASE_URL else "not configured",
+        "api_key": "configured" if settings.ODDS_API_KEY else "missing"
+    }
+
+@app.get("/sports")
+async def get_sports():
+    """Get list of supported sports"""
+    return {
+        "supported_sports": settings.SUPPORTED_SPORTS,
+        "note": "Use the sport key (e.g., 'basketball_nba') in the /ev/feed endpoint"
+    }
 
 @app.get("/ev/feed", response_model=list[BetOpportunity])
-async def get_ev_feed():
+async def get_ev_feed(
+    sport: str = Query("basketball_nba", description="Sport key (e.g., basketball_nba, americanfootball_nfl)"),
+    min_ev: float = Query(0.0, description="Minimum EV percentage to return")
+):
     """
     Scans for +EV opportunities.
     Prioritizes LIVE API if network/key available, else falls back to SAMPLE data.
     """
-    api_key = os.getenv("ODDS_API_KEY")
     use_live = False
     data = []
 
-    if api_key and len(api_key) > 5:
-        # Try Live
-        print("Attempting to fetch LIVE data...")
-        # Fetch generic NBA for MVP
-        data = await get_live_odds(sport_key="basketball_nba")
+    if settings.ODDS_API_KEY and len(settings.ODDS_API_KEY) > 5:
+        # Try Live with all markets
+        data = await get_live_odds(
+            sport_key=sport,
+            markets="h2h,spreads,totals"
+        )
         if data:
             use_live = True
-            print(f"Fetched {len(data)} live games.")
         else:
-            print("Live fetch failed (or empty). Falling back to sample.")
+            print("⚠️  Live fetch failed or empty. Falling back to sample.")
     
     if not use_live:
-        print("Using SAMPLE data.")
+        print("ℹ️  Using SAMPLE data (no API key or live data unavailable).")
         if not os.path.exists(DATA_FILE):
-             raise HTTPException(status_code=404, detail="Sample data not found")
+             raise HTTPException(
+                 status_code=404, 
+                 detail="Sample data not found and no API key configured. Please set ODDS_API_KEY environment variable."
+             )
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
 
-    return process_odds_data(data)
+    opportunities = process_odds_data(data)
+    
+    # Filter by minimum EV if specified
+    if min_ev > 0:
+        opportunities = [opp for opp in opportunities if opp.ev_percent >= min_ev]
+    
+    return opportunities
 
-from typing import Optional
 from app.models.schemas import ParlayRecommendation, ParlayLeg
 
 @app.get("/ev/parlay", response_model=Optional[ParlayRecommendation])
