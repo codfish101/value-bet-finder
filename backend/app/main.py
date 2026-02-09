@@ -167,13 +167,17 @@ async def get_sports():
 
 @app.get("/ev/feed", response_model=list[BetOpportunity])
 async def get_ev_feed(
-    sport: str = Query("basketball_nba", description="Sport key (e.g., basketball_nba, americanfootball_nfl)"),
-    min_ev: float = Query(0.0, description="Minimum EV percentage to return")
+    sport: str = Query("basketball_nba", description="Sport key"),
+    min_ev: float = Query(0.0, description="Minimum EV percentage")
 ):
     """
     Scans for +EV opportunities.
     Prioritizes LIVE API if network/key available, else falls back to SAMPLE data.
     """
+    return await _fetch_ev_data(sport, min_ev)
+
+async def _fetch_ev_data(sport: str, min_ev: float) -> list[BetOpportunity]:
+    """Helper to fetch EV data (live or sample)"""
     use_live = False
     data = []
 
@@ -191,10 +195,9 @@ async def get_ev_feed(
     if not use_live:
         print("ℹ️  Using SAMPLE data (no API key or live data unavailable).")
         if not os.path.exists(DATA_FILE):
-             raise HTTPException(
-                 status_code=404, 
-                 detail="Sample data not found and no API key configured. Please set ODDS_API_KEY environment variable."
-             )
+                # Don't raise inside helper if possible, or handle carefully
+                print("❌ Sample data not found.")
+                return []
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
 
@@ -215,7 +218,8 @@ async def get_suggested_parlay(target_book: str = "FanDuel", min_odds: float = 2
     Targeting ~20x odds.
     """
     # 1. Get all opportunities
-    opportunities = await get_ev_feed()
+    # 1. Get all opportunities (default to NBA and 0 EV for base set)
+    opportunities = await _fetch_ev_data("basketball_nba", 0.0)
     
     # 2. Filter by Book and Positive EV
     candidates = [
