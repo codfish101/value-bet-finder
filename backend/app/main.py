@@ -46,7 +46,7 @@ app.add_middleware(
 # Load sample data path
 DATA_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data", "sample_odds.json")
 
-def process_odds_data(data: list) -> list[BetOpportunity]:
+def process_odds_data(data: list, min_ev_threshold: float = 0.0) -> list[BetOpportunity]:
     opportunities = []
     
     # Helper to map market keys
@@ -110,7 +110,7 @@ def process_odds_data(data: list) -> list[BetOpportunity]:
                     
                     ev = calculate_ev(my_fair_prob, offered_dec)
                     
-                    if ev > 0:
+                    if ev > min_ev_threshold:
                         kelly_full = kelly_criterion(my_fair_prob, offered_dec)
                         kelly_fraction = kelly_full * 0.25
                         stake = 1000 * kelly_fraction
@@ -196,11 +196,11 @@ async def _fetch_ev_data(sport: str, min_ev: float) -> list[BetOpportunity]:
         print("ℹ️  No live data available. Returning empty list (Sample field disabled).")
         return []
 
-    opportunities = process_odds_data(data)
+    opportunities = process_odds_data(data, min_ev)
     
-    # Filter by minimum EV if specified
+    # Filter is now handled inside process_odds_data, but we keep this for safety or additional filtering
     if min_ev > 0:
-        opportunities = [opp for opp in opportunities if opp.ev_percent >= min_ev]
+         opportunities = [opp for opp in opportunities if opp.ev_percent >= min_ev]
     
     return opportunities
 
