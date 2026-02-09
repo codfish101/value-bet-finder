@@ -6,12 +6,16 @@ import ParlayCard from '@/components/ParlayCard';
 import { BetOpportunity } from '@/types';
 
 const SPORTS = {
-  'basketball_nba': '🏀 NBA Basketball',
-  'americanfootball_nfl': '🏈 NFL Football',
-  'baseball_mlb': '⚾ MLB Baseball',
-  'icehockey_nhl': '🏒 NHL Hockey',
+  'basketball_nba': '🏀 NBA',
+  'basketball_ncaab': '🏀 NCAA Basketball',
+  'tennis_atp': '🎾 Tennis - ATP',
+  'tennis_wta': '🎾 Tennis - WTA',
+  'mma_mixed_martial_arts': '🥊 MMA / UFC',
+  'icehockey_nhl': '🏒 NHL',
   'soccer_epl': '⚽ Premier League',
-  'soccer_uefa_champs_league': '⚽ Champions League'
+  'soccer_uefa_champs_league': '⚽ Champions League',
+  'americanfootball_nfl': '🏈 NFL',
+  'baseball_mlb': '⚾ MLB'
 };
 
 export default function Home() {

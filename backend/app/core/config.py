@@ -37,11 +37,15 @@ class Settings:
     # Sports Configuration
     SUPPORTED_SPORTS: dict = {
         "basketball_nba": "NBA Basketball",
-        "americanfootball_nfl": "NFL Football",
-        "baseball_mlb": "MLB Baseball",
+        "basketball_ncaab": "NCAA Basketball",
+        "tennis_atp": "Tennis - ATP",
+        "tennis_wta": "Tennis - WTA",
+        "mma_mixed_martial_arts": "MMA / UFC",
         "icehockey_nhl": "NHL Hockey",
         "soccer_epl": "English Premier League",
-        "soccer_uefa_champs_league": "UEFA Champions League"
+        "soccer_uefa_champs_league": "UEFA Champions League",
+        "americanfootball_nfl": "NFL Football",
+        "baseball_mlb": "MLB Baseball"
     }
     
     # API Settings
